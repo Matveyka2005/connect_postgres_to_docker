@@ -1,0 +1,39 @@
+version: "3.9"
+
+
+services:
+
+  market_proj:
+    build:
+      context: ./Market_proj
+    ports:
+      - "5000:8000"
+      
+    depends_on:
+      - db
+
+    command: ["python3.10", "./market/manage.py", "runserver", "0.0.0.0:8000"]
+
+  db:
+    image: postgres:15.2-alpine
+    restart: unless-stopped
+    # container_name: my_postgres
+    # ports:
+    #   - "5432:5432"
+    volumes: 
+      - postgres_data:/var/lib/postgresql15/data/
+
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    expose:
+      - 5432
+
+volumes:
+  static_volume: {}
+  postgres_data: {}
+
+
+  # db:
+  #   driver: local.
